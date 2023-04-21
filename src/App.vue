@@ -75,6 +75,17 @@
   </form>
   <h3>Form Value of name {{formData.name}}  {{formData.designation}} </h3>
   <h3>Your City And Location {{address}}</h3>
+  <p>Name<input type="text" v-model="filename.name"></p>
+  <p>Designation<input type="text" v-model="filename.designation"></p>
+  <button @click="filename.push('city')">Click Button And show more field in using wacthers</button>
+  <p v-for="name in loopname" :key="name">Loopname is :{{name}}</p>
+  <p v-for="(names, x) in loopdata" :key="names">Multiple object is :{{x}} {{names.name}} {{names.designation}}</p>
+  <div class="abc" v v-for="object in objectArr" :key="object.id">
+    <h3>{{object.name}}</h3>
+    <p v-for="innerarray in object.data" :key="innerarray">{{innerarray}}</p>
+  </div>
+  <p v-for="(data,x,i) in infoloop" :key="data">{{i}} {{x}} {{data}}</p>
+  <p v-for="salary in validsalary" :key="salary.name">{{salary.name}}</p>
 </template>
 <script>
 export default {
@@ -93,13 +104,43 @@ export default {
       country:[],
       city:'ghaziabad',
       location:'lal kuan',
+      filename:['Akash','SoftwareDeveloper'],
+      // filename:'',
+      // filename:{
+      //   name:'',
+      //   designation: '',
+      // },
       formData:{
         name:'',
         designation:''
-      }
+      },
+      loopname:['akash','developer'],
+      loopdata:[
+        {id:'0',name:'test1',designation:'software developer'},
+        {id:'1',name:'test2',designation:'web developer'}
+      ],
+      objectArr:[
+        {id:0,name:'test1',data:['a','b','c','d']},
+        {id:1,name:'test2',data:['e','f','g','h']}
+      ],
+      infoloop:{
+        name:'Akash',
+        designation: 'software developer',
+        place:'dwarka delhi'
+      },
+      condtionLoop:[
+        {name:'akash',salary:'30000'},
+        {name:'roshan',salary:'40000'},
+        {name:'salim',salary:'45000'},
+        {name:'mukesh',salary:'35000'},
+        {name:'kapil',salary:'32000'}
+      ],
     }
   },
   computed:{
+    validsalary(){
+      return this.condtionLoop.filter(condtionLoop =>condtionLoop.salary <=35000)
+    },
   address:{
     get(){
       return this.city + ' ' +this.location
@@ -139,10 +180,38 @@ export default {
     },
     submissionForm(){
       console.log('The Form Data is',this.formData)
-
     }
+  },
+  watch:{
+    countnumber(newvalue, oldvalue){
+      if(newvalue>oldvalue && newvalue==25) alert("This Value maximum increase")
+    },
+    // filename(newvalue){
+    //   console.log("Calling api for search " +newvalue)
+    // }
 
+    // if use for a immediate true then watcher handler
+    // filename:{
+    //   handler(newvalue){
+    //     console.log("Calling api for search " +newvalue);
+    //   },
+    //   immediate:true
+    // }
 
+    //if use for nested or multiple value then u can use deep
+    // filename:{
+    //   handler(newvalue){
+    //     console.log('Name is :' +newvalue.name + 'Designation is :' +newvalue.designation);
+    //   },
+    //   deep:true,
+    //   immediate:true
+    // }
+    filename:{
+      handler(newvalue){
+        console.log('Added Names are :' +newvalue)
+      },
+      deep:true
+    }
   }
 }
 </script>
